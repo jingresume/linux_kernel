@@ -86,10 +86,78 @@
 	};
 
 
-         /* External sound card */
-         sound: sound {
-                     status = "disabled";
-         };
+    /* External sound card */
+    sound: sound {
+                 status = "disabled";
+    };
+
+	/*
+	*CCM_CCGR1                         0x020C406C
+	*IOMUXC_SW_MUX_CTL_PAD_GPIO1_IO04  0x020E006C
+	*IOMUXC_SW_PAD_CTL_PAD_GPIO1_IO04  0x020E02F8
+	*GPIO1_GD                          0x0209C000
+	*GPIO1_GDIR                        0x0209C004
+	*/
+
+	/*
+	*CCM_CCGR3                         0x020C4074
+	*IOMUXC_SW_MUX_CTL_PAD_CSI_HSYNC   0x020E01E0
+	*IOMUXC_SW_PAD_CTL_PAD_CSI_HSYNC   0x020E046C
+	*GPIO4_GD                          0x020A8000
+	*GPIO4_GDIR                        0x020A8004
+	*/
+
+	/*
+	*CCM_CCGR3                         0x020C4074
+	*IOMUXC_SW_MUX_CTL_PAD_CSI_VSYNC   0x020E01DC
+	*IOMUXC_SW_PAD_CTL_PAD_CSI_VSYNC   0x020E0468
+	*GPIO4_GD                          0x020A8000
+	*GPIO4_GDIR                        0x020A8004
+	*/
+    rgb_led {
+		#address-cells = <1>;
+		#size-cells = <1>;
+		compatible = "fire,rgb_led";
+		// 如果不加ranges，iomap时会出错
+        ranges;
+		rgb_led_red@0x020C406C{
+			compatible = "fire,rgb_led_red";
+			reg = <0x020C406C 0x04
+			       0x020E006C 0x04
+				   0x020E02F8 0x04
+				   0x0209C000 0x04
+				   0x0209C004 0x04>;
+			led_pin = <4>;
+			clock_offset = <26>;
+			status = "okay";
+		};
+
+		rgb_led_green@0x020C4074{
+			compatible = "fire,rgb_led_green";
+			reg = <0x020C4074 0x04
+				   0x020E01E0 0x04
+				   0x020E046C 0x04
+				   0x020A8000 0x04
+				   0x020A8004 0x04>;
+			led_pin = <20>;
+			clock_offset = <12>;
+			status = "okay";
+		};
+
+
+		rgb_led_blue@0x020C4074{
+			compatible = "fire,rgb_led_blue";
+			reg = <0x020C4074 0x04
+				   0x020E01DC 0x04
+				   0x020E0468 0x04
+			       0x020A8000 0x04
+				   0x020A8004 0x04>;
+			led_pin = <19>;
+			clock_offset = <12>;
+			status = "okay";
+		};
+	};
+
 };
 
 &cpu0 {
